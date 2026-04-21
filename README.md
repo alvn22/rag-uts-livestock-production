@@ -2,7 +2,7 @@
 
 > **Retrieval-Augmented Generation** — Sistem Tanya-Jawab Cerdas Berbasis Dokumen
 
-Starter pack ini adalah **kerangka awal** proyek RAG untuk UTS Data Engineering D3/D4.
+Starter pack ini adalah **kerangka awal** proyek RAG untuk UTS Data Engineering D4.
 Mahasiswa mengisi, memodifikasi, dan mengembangkan kode ini sesuai topik kelompok masing-masing.
 
 ---
@@ -11,21 +11,21 @@ Mahasiswa mengisi, memodifikasi, dan mengembangkan kode ini sesuai topik kelompo
 
 | Nama | NIM | Tugas Utama |
 |------|-----|-------------|
-| ...  | ... | ...         |
-| ...  | ... | ...         |
-| ...  | ... | ...         |
+| Alvian Dwiky P.S  | 244311002 | Data Engineer         |
+| Davin Rafael S.  | 244311007 | Project Manager         |
+| Nadia Tifara S. | 244311022 | Data Analyst         |
 
-**Topik Domain:** *(isi: Akademik / Kesehatan / Hukum / Bisnis / Pertanian / Teknologi)*  
-**Stack yang Dipilih:** *(isi: LangChain / LlamaIndex / From Scratch)*  
-**LLM yang Digunakan:** *(isi: Groq / Gemini / Ollama / lainnya)*  
-**Vector DB yang Digunakan:** *(isi: ChromaDB / FAISS / lainnya)*
+**Topik Domain:** *Pertanian*  
+**Stack yang Dipilih:** *From Scratch*  
+**LLM yang Digunakan:** *Gemini*  
+**Vector DB yang Digunakan:** *ChromaDB*
 
 ---
 
 ## 🗂️ Struktur Proyek
 
 ```
-rag-uts-[nama-kelompok]/
+rag-uts-livestock-production/
 ├── data/                    # Dokumen sumber Anda (PDF, TXT, dll.)
 │   └── sample.txt           # Contoh dokumen (ganti dengan dokumen Anda)
 ├── src/
