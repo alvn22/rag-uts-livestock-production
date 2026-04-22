@@ -36,6 +36,7 @@ def build_index_scratch():
     import json
     import pandas as pd
     import numpy as np
+    from pypdf import PdfReader
     import faiss
     from embeddings import embed_texts
     from utils import clean_filename
@@ -44,13 +45,39 @@ def build_index_scratch():
 
     # Load dokumen
     documents = []
+
+    # read .pdf
+    for file_path in DATA_DIR.glob("**/*.pdf"):
+        try:
+            reader = PdfReader(file_path)
+            text = ""
+
+            for page in reader.pages:
+                content = page.extract_text()
+                if content:
+                    text += content + "\n"
+
+            if text.strip():
+                documents.append({
+                    "source": str(file_path),
+                    "content": text
+                })
+            else:
+                print(f"⚠️ PDF kosong (kemungkinan scan): {file_path}")
+
+        except Exception as e:
+            print(f"❌ Error membaca PDF {file_path}: {e}")
+
+    # read .csv
     for file_path in DATA_DIR.glob("**/*.csv"):
         df = pd.read_csv(file_path, sep=";")
         # ambil nama file tanpa extension
         jenis_produksi = clean_filename(file_path.stem)
         content = ""
         for _, row in df.iterrows():
-            if row["2021"] != "-" and row["2022"] != "-":
+            if row["2021"] == "-" and row["2022"] == "-":
+                continue
+            elif row["2021"] != "-" and row["2022"] != "-":
                 content += (
                     f"Produksi {jenis_produksi} di provinsi {row['Provinsi']} "
                     f"pada tahun 2021 adalah {row['2021']} ton, "
