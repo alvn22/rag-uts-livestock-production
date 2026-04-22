@@ -19,9 +19,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-TOP_K         = int(os.getenv("TOP_K", 3))
+TOP_K         = int(os.getenv("TOP_K", 6))
 VS_DIR        = Path(os.getenv("VECTORSTORE_DIR", "./vectorstore"))
-LLM_MODEL     = os.getenv("LLM_MODEL_NAME", "llama3-8b-8192")
+LLM_MODEL     = os.getenv("LLM_MODEL_NAME", "gemini-3-flash-preview")
 
 def load_vectorstore():
     """Memuat vector database yang sudah dibuat oleh indexing.py"""
@@ -169,7 +169,7 @@ Sebelum menjawab "Saya tidak tahu", periksa apakah ada:
 7. JIKA BENAR-BENAR TIDAK ADA DATA
 Jawab tepat:
 
-"Saya tidak tahu"
+"Saya tidak tahu" dan sertakan penjelasan singkat bahwa data tidak ada
 
 FORMAT JAWABAN:
 
