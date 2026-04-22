@@ -11,11 +11,11 @@ streamlit>=1.32.0
 # ============================================================
 # OPSI A: LangChain (direkomendasikan untuk pemula)
 # ============================================================
-langchain>=0.1.0
-langchain-community>=0.0.20
-langchain-openai>=0.0.5          # Jika pakai OpenAI / Groq
-langchain-google-genai>=0.0.6   # Jika pakai Google Gemini
-langchain-ollama>=0.0.1         # Jika pakai Ollama (offline)
+# langchain>=0.1.0
+# langchain-community>=0.0.20
+# langchain-openai>=0.0.5          # Jika pakai OpenAI / Groq
+# langchain-google-genai>=0.0.6   # Jika pakai Google Gemini
+# langchain-ollama>=0.0.1         # Jika pakai Ollama (offline)
 
 # ============================================================
 # OPSI B: LlamaIndex
@@ -28,14 +28,14 @@ langchain-ollama>=0.0.1         # Jika pakai Ollama (offline)
 # ============================================================
 # OPSI C: From Scratch (tanpa framework RAG)
 # ============================================================
-# sentence-transformers>=2.6.0  # Untuk embedding lokal gratis
-# requests>=2.31.0              # HTTP requests ke LLM API
+sentence-transformers>=2.6.0  # Untuk embedding lokal gratis
+requests>=2.31.0              # HTTP requests ke LLM API
 
 # ============================================================
 # Vector Database (pilih salah satu)
 # ============================================================
-chromadb>=0.4.0                  # Rekomendasi: mudah, lokal
-# faiss-cpu>=1.7.4               # Alternatif: sangat cepat
+# chromadb>=0.4.0                  # Rekomendasi: mudah, lokal
+faiss-cpu>=1.7.4               # Alternatif: sangat cepat
 # qdrant-client>=1.7.0           # Alternatif: fitur lengkap
 
 # ============================================================
