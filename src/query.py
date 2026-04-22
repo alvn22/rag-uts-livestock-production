@@ -19,23 +19,14 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-CHUNK_SIZE    = int(os.getenv("CHUNK_SIZE", 500))
-CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", 50))
 TOP_K         = int(os.getenv("TOP_K", 3))
 VS_DIR        = Path(os.getenv("VECTORSTORE_DIR", "./vectorstore"))
 LLM_MODEL     = os.getenv("LLM_MODEL_NAME", "llama3-8b-8192")
 
-
-# =============================================================
-# TODO MAHASISWA:
-# Pilih implementasi yang sesuai dengan pilihan LLM kalian
-# =============================================================
-
-
 def load_vectorstore():
     """Memuat vector database yang sudah dibuat oleh indexing.py"""
-    from langchain_community.embeddings import HuggingFaceEmbeddings
-    from langchain_community.vectorstores import Chroma
+    import json
+    import faiss
 
     if not VS_DIR.exists():
         raise FileNotFoundError(
@@ -43,16 +34,15 @@ def load_vectorstore():
             "Jalankan dulu: python src/indexing.py"
         )
 
-    embedding_model = HuggingFaceEmbeddings(
-        model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
-        model_kwargs={"device": "cpu"}
-    )
+    index = faiss.read_index(str(VS_DIR / "index.faiss"))
 
-    vectorstore = Chroma(
-        persist_directory=str(VS_DIR),
-        embedding_function=embedding_model
-    )
-    return vectorstore
+    with open(VS_DIR / "chunks.json", "r", encoding="utf-8") as f:
+        chunks = json.load(f)
+
+    return {
+        "index": index,
+        "chunks": chunks
+    }
 
 
 def retrieve_context(vectorstore, question: str, top_k: int = TOP_K) -> list:
@@ -64,16 +54,32 @@ def retrieve_context(vectorstore, question: str, top_k: int = TOP_K) -> list:
     - Mencari top_k chunk paling relevan
     - Mengembalikan list dokumen relevan
     """
-    results = vectorstore.similarity_search_with_score(question, k=top_k)
-    
+    import numpy as np
+    import faiss
+    from embeddings import embed_query
+
+    index = vectorstore["index"]
+    chunks = vectorstore["chunks"]
+
+    # embed query
+    query_vec = embed_query(question).astype("float32")
+    query_vec = np.array([query_vec])
+
+    # cosine similarity
+    faiss.normalize_L2(query_vec)
+
+    scores, indices = index.search(query_vec, top_k)
+
     contexts = []
-    for doc, score in results:
+    for score, idx in zip(scores[0], indices[0]):
+        chunk = chunks[idx]
+
         contexts.append({
-            "content": doc.page_content,
-            "source": doc.metadata.get("source", "unknown"),
-            "score": round(float(score), 4)
+            "content": chunk["text"],
+            "source": chunk["source"],
+            "score": float(score)
         })
-    
+
     return contexts
 
 
@@ -118,29 +124,29 @@ JAWABAN:"""
 # ─────────────────────────────────────────────────────────────
 # OPSI LLM A: Groq (gratis, cepat) — REKOMENDASI
 # ─────────────────────────────────────────────────────────────
-def get_answer_groq(prompt: str) -> str:
-    """Menggunakan Groq API (gratis, sangat cepat)."""
-    from groq import Groq
+# def get_answer_groq(prompt: str) -> str:
+#     """Menggunakan Groq API (gratis, sangat cepat)."""
+#     from groq import Groq
     
-    client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-    response = client.chat.completions.create(
-        model=LLM_MODEL,  # "llama3-8b-8192" atau "mixtral-8x7b-32768"
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.1,   # Rendah = jawaban lebih konsisten/faktual
-        max_tokens=1024
-    )
-    return response.choices[0].message.content
+#     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+#     response = client.chat.completions.create(
+#         model=LLM_MODEL,  # "llama3-8b-8192" atau "mixtral-8x7b-32768"
+#         messages=[{"role": "user", "content": prompt}],
+#         temperature=0.1,   # Rendah = jawaban lebih konsisten/faktual
+#         max_tokens=1024
+#     )
+#     return response.choices[0].message.content
 
 
 # ─────────────────────────────────────────────────────────────
 # OPSI LLM B: Google Gemini (gratis tier)
 # ─────────────────────────────────────────────────────────────
-# def get_answer_gemini(prompt: str) -> str:
-#     import google.generativeai as genai
-#     genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-#     model = genai.GenerativeModel("gemini-1.5-flash")
-#     response = model.generate_content(prompt)
-#     return response.text
+def get_answer_gemini(prompt: str) -> str:
+    import google.generativeai as genai
+    genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+    model = genai.GenerativeModel(LLM_MODEL)
+    response = model.generate_content(prompt)
+    return response.text
 
 
 # ─────────────────────────────────────────────────────────────
@@ -179,8 +185,8 @@ def answer_question(question: str, vectorstore=None) -> dict:
     print("🤖 Mengirim ke LLM...")
     
     # TODO: Ganti sesuai LLM yang kalian pilih
-    answer = get_answer_groq(prompt)
-    # answer = get_answer_gemini(prompt)
+    # answer = get_answer_groq(prompt)
+    answer = get_answer_gemini(prompt)
     # answer = get_answer_ollama(prompt)
     
     return {
