@@ -49,10 +49,10 @@ with st.sidebar:
     
     # TODO: Isi informasi kelompok kalian di sini
     st.markdown("""
-    **Kelompok:** *(nama kelompok)*  
-    **Domain:** *(domain dokumen)*  
-    **LLM:** *(provider LLM)*  
-    **Vector DB:** ChromaDB  
+    **Kelompok:** *Kelompok 7*  
+    **Domain:** *Livestock Production*  
+    **LLM:** *Gemini 3 Flash*  
+    **Vector DB:** FAISS  
     **Embedding:** multilingual-MiniLM
     """)
     
@@ -112,7 +112,7 @@ if question := st.chat_input("Ketik pertanyaan Anda di sini..."):
         with st.spinner("Mencari informasi relevan dan menghasilkan jawaban..."):
             try:
                 from query import answer_question
-                result = answer_question(question, vectorstore)
+                result = answer_question(question, vectorstore, top_k=top_k)
                 
                 st.write(result["answer"])
                 
