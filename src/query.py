@@ -208,24 +208,6 @@ JAWABAN:"""
     
     return prompt
 
-
-# ─────────────────────────────────────────────────────────────
-# OPSI LLM A: Groq (gratis, cepat) — REKOMENDASI
-# ─────────────────────────────────────────────────────────────
-# def get_answer_groq(prompt: str) -> str:
-#     """Menggunakan Groq API (gratis, sangat cepat)."""
-#     from groq import Groq
-    
-#     client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-#     response = client.chat.completions.create(
-#         model=LLM_MODEL,  # "llama3-8b-8192" atau "mixtral-8x7b-32768"
-#         messages=[{"role": "user", "content": prompt}],
-#         temperature=0.1,   # Rendah = jawaban lebih konsisten/faktual
-#         max_tokens=1024
-#     )
-#     return response.choices[0].message.content
-
-
 # ─────────────────────────────────────────────────────────────
 # OPSI LLM B: Google Gemini (gratis tier)
 # ─────────────────────────────────────────────────────────────
@@ -235,21 +217,6 @@ def get_answer_gemini(prompt: str) -> str:
     model = genai.GenerativeModel(LLM_MODEL)
     response = model.generate_content(prompt)
     return response.text
-
-
-# ─────────────────────────────────────────────────────────────
-# OPSI LLM C: Ollama (100% offline, gratis)
-# Pastikan Ollama sudah diinstall dan model sudah di-pull:
-# ollama pull llama3
-# ─────────────────────────────────────────────────────────────
-# def get_answer_ollama(prompt: str) -> str:
-#     import requests
-#     response = requests.post(
-#         "http://localhost:11434/api/generate",
-#         json={"model": "llama3", "prompt": prompt, "stream": False}
-#     )
-#     return response.json()["response"]
-
 
 def answer_question(question: str, vectorstore=None) -> dict:
     """
@@ -273,9 +240,7 @@ def answer_question(question: str, vectorstore=None) -> dict:
     print("🤖 Mengirim ke LLM...")
     
     # TODO: Ganti sesuai LLM yang kalian pilih
-    # answer = get_answer_groq(prompt)
     answer = get_answer_gemini(prompt)
-    # answer = get_answer_ollama(prompt)
     
     return {
         "question": question,

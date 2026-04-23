@@ -89,7 +89,7 @@ def build_index_scratch():
         })
     print(f" {len(documents)} dokumen dimuat")
 
-    # Chunking manual
+    # Chunking
     chunks = []
     for doc in documents:
         text = doc["content"]
