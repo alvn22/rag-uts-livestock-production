@@ -155,11 +155,9 @@ Semua konfigurasi utama ada di `src/config.py` (atau langsung di setiap file):
 
 *(Masukkan gambar diagram arsitektur di sini)*
 
-```
-[Dokumen] → [Loader] → [Splitter] → [Embedding] → [Vector DB]
-                                                         ↕
-[User Query] → [Query Embed] → [Retriever] → [Prompt] → [LLM] → [Jawaban]
-```
+
+<img width="1920" height="1080" alt="Dokumen" src="https://github.com/user-attachments/assets/8f587c15-367a-40c9-9179-000b346a014e" />
+
 
 ---
 
