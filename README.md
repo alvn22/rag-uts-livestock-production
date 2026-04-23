@@ -15,10 +15,10 @@ Mahasiswa mengisi, memodifikasi, dan mengembangkan kode ini sesuai topik kelompo
 | Davin Rafael S.  | 244311007 | Project Manager         |
 | Nadia Tifara S. | 244311022 | Data Analyst         |
 
-**Topik Domain:** *Pertanian*  
+**Topik Domain:** *Pertanian & Lingkungan*  
 **Stack yang Dipilih:** *From Scratch*  
 **LLM yang Digunakan:** *Gemini*  
-**Vector DB yang Digunakan:** *ChromaDB*
+**Vector DB yang Digunakan:** *FAISS*
 
 ---
 
@@ -26,17 +26,17 @@ Mahasiswa mengisi, memodifikasi, dan mengembangkan kode ini sesuai topik kelompo
 
 ```
 rag-uts-livestock-production/
-├── data/                    # Dokumen sumber Anda (PDF, TXT, dll.)
-│   └── sample.txt           # Contoh dokumen (ganti dengan dokumen Anda)
+├── data/                    # Dokumen sumber
+│   └── sample.txt           # Contoh dokumen
 ├── src/
-│   ├── indexing.py          # 🔧 WAJIB DIISI: Pipeline indexing
-│   ├── query.py             # 🔧 WAJIB DIISI: Pipeline query & retrieval
-│   ├── embeddings.py        # 🔧 WAJIB DIISI: Konfigurasi embedding
+│   ├── indexing.py          # 🔧 Pipeline indexing
+│   ├── query.py             # 🔧 Pipeline query & retrieval
+│   ├── embeddings.py        # 🔧 Konfigurasi embedding
 │   └── utils.py             # Helper functions
 ├── ui/
-│   └── app.py               # 🔧 WAJIB DIISI: Antarmuka Streamlit
+│   └── app.py               # 🔧 Antarmuka Streamlit
 ├── docs/
-│   └── arsitektur.png       # 📌 Diagram arsitektur (buat sendiri)
+│   └── arsitektur.png       # 📌 Diagram arsitektur
 ├── evaluation/
 │   └── hasil_evaluasi.xlsx  # 📌 Tabel evaluasi 10 pertanyaan
 ├── notebooks/
@@ -111,8 +111,8 @@ Semua konfigurasi utama ada di `src/config.py` (atau langsung di setiap file):
 |-----------|---------|------------|
 | `CHUNK_SIZE` | 500 | Ukuran setiap chunk teks (karakter) |
 | `CHUNK_OVERLAP` | 50 | Overlap antar chunk |
-| `TOP_K` | 3 | Jumlah dokumen relevan yang diambil |
-| `MODEL_NAME` | *(isi)* | Nama model LLM yang digunakan |
+| `TOP_K` | 6 | Jumlah dokumen relevan yang diambil |
+| `MODEL_NAME` | *gemini-3-flash-preview* | Nama model LLM yang digunakan |
 
 ---
 
@@ -144,9 +144,9 @@ Semua konfigurasi utama ada di `src/config.py` (atau langsung di setiap file):
 
 ## 📚 Referensi & Sumber
 
-- Framework: *(LangChain docs / LlamaIndex docs)*
-- LLM: *(Groq / Gemini / Ollama)*
-- Vector DB: *(ChromaDB / FAISS docs)*
+- Framework: *From Scratch*
+- LLM: *Gemini*
+- Vector DB: *FAISS docs*
 - Tutorial yang digunakan: *(cantumkan URL)*
 
 ---
@@ -155,4 +155,4 @@ Semua konfigurasi utama ada di `src/config.py` (atau langsung di setiap file):
 
 - **Mata Kuliah:** Data Engineering
 - **Program Studi:** D4 Teknologi Rekayasa Perangkat Lunak
-- **Deadline:** *(isi tanggal)*
+- **Deadline:** *23 April 2026*
